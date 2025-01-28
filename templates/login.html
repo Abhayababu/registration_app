@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="static/login.css">
+        <title>
+            login
+        </title>
+    </head>
+    <body>
+        <h1>login</h1>
+        <form method="POST" action="/homescreen">
+            <input type="text" name="username" placeholder="username" required ><br>
+            <input type="password" name="password" placeholder="password"><br>
+            <button type="submit">login</button>
+        </form>
+        <p> Dont have an account?<a href="/register">Register</a></p>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                 <ul>
+                    {% for category, message in message %}
+                          <li>{{ message}}</li>
+                    {% endfor %}
+                 </ul>
+            {% endif %}
+        {% endwith %}
+             
+    </body>
+</html>
