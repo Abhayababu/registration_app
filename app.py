@@ -2,24 +2,11 @@ from flask import Flask, redirect, url_for, request, session, flash, render_temp
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
-users = {}
+users = {'test':'123'}
 
 @app.route("/")
 def home():
     return redirect(url_for("login"))
-
-@app.route("/login", methods=['GET', 'POST'])
-def login():
-    if request.method == "GET":
-        username = request.form["username"]
-        password = request.form["password"]
-        if username in users and users[username] == password:
-            session['username'] = username
-            return redirect(url_for("homescreen"))
-        else:
-            flash("Invalid username or password", "error")
-            
-    return render_template('login.html')
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -33,6 +20,22 @@ def register():
             flash("Registered successfully", 'success')
             return redirect(url_for("login"))
     return render_template('register.html')
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == "POST":  
+        username = request.form['username']
+        password = request.form['password']
+        if username in users and users[username] == password:
+            session['username'] = username
+            return redirect(url_for("homescreen"))
+        else:
+            flash("Invalid username or password", "error")
+            
+    return render_template('login.html')
+
+
+
 @app.route("/homescreen")
 def homescreen():
     if "username" not in session:
@@ -44,6 +47,6 @@ def logout():
     session.pop('username',None)
     flash('You have been logged out','success')
     return redirect(url_for('login'))
+
 if __name__ == "__main__":
     app.run(debug=True)
-
